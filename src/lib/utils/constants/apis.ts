@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3002/api/v1";
+// const API_URL = "http://localhost:3002/api/v1"; //local
+const API_URL = "https://koleshwardhambackend-1.onrender.com/api/v1"; //live
 
 const APIs = {
   // auth

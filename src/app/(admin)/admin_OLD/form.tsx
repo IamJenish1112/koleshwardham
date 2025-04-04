@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import axios from "axios";
+import { createEvent, updateEvent } from "@/lib/services/events";
 
 // Define types for the event and component props
 interface ImageType {
@@ -234,34 +235,32 @@ const EventForm: React.FC<EventFormProps> = ({ event, isEdit = false }) => {
       // Send data to API
       let response;
       if (isEdit) {
-        response = await axios.post(
-          "http://localhost:3002/api/v1/events/update",
-          formDataToSubmit,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-      } else {
-        response = await axios.post(
-          "http://localhost:3002/api/v1/events/create",
-          formDataToSubmit,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-      }
+        response = await updateEvent({
+          _id: formData._id || "",
+          title: formData.title,
+          shortDescription: formData.shortDescription,
+          description: formData.description,
+          date: formData.date,
+          location: formData.location,
+          images: images.map((image) => image.file.name),
+        });
 
-      // Show success message
-      toast.success(
-        isEdit ? "Event updated successfully!" : "Event created successfully!",
-        {
-          style: { background: "#FFF8F3", borderLeft: "5px solid #FF8C38" },
+        if (response.status === 1) {
+          toast.success("Event updated successfully");
         }
-      );
+      } else {
+        response = await createEvent({
+          title: formData.title,
+          shortDescription: formData.shortDescription,
+          description: formData.description,
+          date: formData.date,
+          location: formData.location,
+          images: images.map((image) => image.file.name),
+        });
+        if (response.status === 1) {
+          toast.success("event Created Successfully");
+        }
+      }
 
       // Reset form on successful submission
       if (!isEdit) {

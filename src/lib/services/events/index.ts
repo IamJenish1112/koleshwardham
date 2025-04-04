@@ -8,10 +8,10 @@ const tokenRequired = false;
 
 // Interface defining the structure of an Event
 export interface Event {
-  _id: string;
+  _id?: string;
   title: string;
   shortDescription: string;
-  images: string[];
+  images?: string[];
   date: string;
   location: string;
   description: string;
@@ -75,15 +75,12 @@ export const getEventById = async (data: {
  * @param data Object containing the event ID and updates
  * @returns Promise with the updated event data
  */
-export const updateEvent = async (data: {
-  id: string;
-  updates: Partial<Event>;
-}): Promise<EventApiResponse> => {
+export const updateEvent = async (data: Event): Promise<EventApiResponse> => {
   try {
     const response = await apiCall(
       APIs.UPDATE_EVENT,
-      HTTP_METHODS.PUT,
-      { ...data.updates, id: data.id },
+      HTTP_METHODS.POST,
+      data,
       tokenRequired
     );
     return response as EventApiResponse;
@@ -98,6 +95,21 @@ export const updateEvent = async (data: {
  * @param id The ID of the event to delete
  * @returns Promise with the response from the API
  */
+
+export const createEvent = async (data: Event): Promise<EventApiResponse> => {
+  try {
+    const response = await apiCall(
+      APIs.CREATE_EVENT,
+      HTTP_METHODS.POST,
+      data,
+      tokenRequired
+    );
+    return response as EventApiResponse;
+  } catch (error) {
+    console.error("Error creating event", error);
+    throw error;
+  }
+};
 export const deleteEvent = async (id: string): Promise<BasicResponse> => {
   try {
     const response = await apiCall(

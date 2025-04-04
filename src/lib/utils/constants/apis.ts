@@ -22,9 +22,9 @@ const APIs = {
   //events
   GET_ALL_EVENTS: `${API_URL}/events`,
   GET_EVENT_BY_ID: `${API_URL}/events/getEventById`,
-  UPDATE_EVENT: `${API_URL}/events/updateEvent`,
-  CREATE_EVENT: `${API_URL}/events/createEvent`,
-  DELETE_EVENT: `${API_URL}/events/deleteEvent`,
+  UPDATE_EVENT: `${API_URL}/events/update`,
+  CREATE_EVENT: `${API_URL}/events/create`,
+  DELETE_EVENT: `${API_URL}/events/delete`,
 };
 
 export default APIs;
